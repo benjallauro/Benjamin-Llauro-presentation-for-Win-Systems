@@ -6,26 +6,33 @@ namespace SlotMachine
     public class Row : MonoBehaviour
     {
         private float _timeInterval;
+        private bool _goingToStop = false;
+
 
         public bool rowStopped;
         public string stoppedSlot;
+        private SlotIcon _finalTarget;
+
+        [SerializeField] private SlotIcon[] realIcons;
+        [SerializeField] private SlotIcon ghostIconToLoop;
         [SerializeField] private float timeToStop;
 
         [SerializeField] private float scrollSpeed;
         [SerializeField] private Transform comparisonToReset;
-        float startPositionY;
+        [SerializeField] private Transform middlePoint;
+        Vector3 startPosition;
 
         private void Start()
         {
             rowStopped = true;
-            startPositionY = transform.position.y;
+            startPosition = transform.position;
             GameControl.startButtonPressed += StartRotating;
         }
         private void StartRotating()
         {
             stoppedSlot = "";
             rowStopped = false;
-
+            StopAllCoroutines();
             StartCoroutine(CheckTimer()); // Temporal call
 
             //StopAllCoroutines();
@@ -36,13 +43,23 @@ namespace SlotMachine
         {
             if(!rowStopped)
             {
-                if (transform.position.y < comparisonToReset.position.y) //11.5f is the position to the first real piece.
+                if (ghostIconToLoop.transform.position.y <= comparisonToReset.position.y)
                 {
-                    transform./*Local*/position = new Vector3(transform.position.x, startPositionY, transform.position.z);
+                    transform.position = startPosition;
                 }
                 else
+                {
                     transform.position = new Vector3(transform.position.x,
                         transform.position.y + scrollSpeed * Time.deltaTime, transform.position.z);
+                    if(_goingToStop)
+                    {
+                        if (_finalTarget.transform.position.y <= middlePoint.position.y)
+                        {
+                            rowStopped = true;
+                            _goingToStop = false;
+                        }
+                    }
+                }
             }
         }
         IEnumerator CheckTimer()
@@ -51,10 +68,31 @@ namespace SlotMachine
             while (true)
             {
                 yield return wait;
-                rowStopped = true;
+                _goingToStop = true;
+                _finalTarget = GetClosestHigherIconFromCenter();
                 StopAllCoroutines();
             }
         }
+
+        private SlotIcon GetClosestHigherIconFromCenter()
+        {
+            SlotIcon closestIcon = realIcons[0];
+            float closestDistance = Vector3.Distance(closestIcon.transform.position, middlePoint.position); //  closestIcon.transform.position.y - middlePoint.position.y;
+            float currentDistance;
+            for(int i = 0; i < realIcons.Length; i++)
+            {
+                currentDistance = Vector3.Distance(realIcons[i].transform.position, middlePoint.position);
+                if (currentDistance < closestDistance && realIcons[i].transform.position.y > middlePoint.position.y)
+                {
+                    Debug.Log("ICONO MAS CERCANO: " + realIcons[i].gameObject.name + ". Posicion en Y:" + realIcons[i].transform.position.y);
+                    Debug.Log("Middlepoint Y: " + middlePoint.position.y);
+                    closestDistance = currentDistance;
+                    closestIcon = realIcons[i];
+                }
+            }
+            return closestIcon;
+        }
+
 
         private IEnumerator Rotate() //The tutorial had A LOT of hardcoding here, Check and fix before sending!!.
         {

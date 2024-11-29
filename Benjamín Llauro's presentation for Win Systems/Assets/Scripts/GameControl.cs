@@ -17,7 +17,7 @@ namespace SlotMachine
 
         private int _prizeValue;
 
-        private bool _resultsChecked = false;
+        private bool _resultsChecked = true;
 
 
         void Update()
@@ -54,6 +54,7 @@ namespace SlotMachine
             if(CheckRowsStopped())
             {
                 startButtonPressed();
+                _resultsChecked = false;
             }
         }
         private void CheckResults()
