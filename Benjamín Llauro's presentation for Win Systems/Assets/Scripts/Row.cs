@@ -1,28 +1,61 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace SlotMachine
 {
     public class Row : MonoBehaviour
     {
-        private int _randomValue;
         private float _timeInterval;
 
         public bool rowStopped;
         public string stoppedSlot;
+        [SerializeField] private float timeToStop;
+
+        [SerializeField] private float scrollSpeed;
+        [SerializeField] private Transform comparisonToReset;
+        float startPositionY;
 
         private void Start()
         {
             rowStopped = true;
+            startPositionY = transform.position.y;
             GameControl.startButtonPressed += StartRotating;
         }
         private void StartRotating()
         {
             stoppedSlot = "";
-            StopAllCoroutines();
-            StartCoroutine(Rotate());
+            rowStopped = false;
+
+            StartCoroutine(CheckTimer()); // Temporal call
+
+            //StopAllCoroutines();
+            //StartCoroutine(Rotate());
         }
+
+        private void FixedUpdate()
+        {
+            if(!rowStopped)
+            {
+                if (transform.position.y < comparisonToReset.position.y) //11.5f is the position to the first real piece.
+                {
+                    transform./*Local*/position = new Vector3(transform.position.x, startPositionY, transform.position.z);
+                }
+                else
+                    transform.position = new Vector3(transform.position.x,
+                        transform.position.y + scrollSpeed * Time.deltaTime, transform.position.z);
+            }
+        }
+        IEnumerator CheckTimer()
+        {
+            WaitForSeconds wait = new WaitForSeconds(timeToStop);
+            while (true)
+            {
+                yield return wait;
+                rowStopped = true;
+                StopAllCoroutines();
+            }
+        }
+
         private IEnumerator Rotate() //The tutorial had A LOT of hardcoding here, Check and fix before sending!!.
         {
             rowStopped = false;
