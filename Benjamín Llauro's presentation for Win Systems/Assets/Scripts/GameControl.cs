@@ -13,7 +13,8 @@ namespace SlotMachine
 
         [SerializeField] private Row[] rows;
         [SerializeField] private string prePrizeText;
-        [SerializeField] private float spinTime;
+        [SerializeField] private float minSpinTime;
+        [SerializeField] private float maxSpinTime;
         [SerializeField] private float startDelay;
         [SerializeField] private float minStopDelayRange;
         [SerializeField] private float maxStopDelayRange;
@@ -80,11 +81,11 @@ namespace SlotMachine
         }
         private IEnumerator StopRotationWithDelay()
         {
-            WaitForSeconds wait = new WaitForSeconds(UnityEngine.Random.Range(minStopDelayRange, maxStopDelayRange));
             while (true)
             {
                 foreach (Row current in rows)
                 {
+                    WaitForSeconds wait = new WaitForSeconds(UnityEngine.Random.Range(minStopDelayRange, maxStopDelayRange));
                     yield return wait;
                     current.PrepareToStop();
                 }
@@ -93,7 +94,7 @@ namespace SlotMachine
         }
         private IEnumerator CheckTimer()
         {
-            WaitForSeconds wait = new WaitForSeconds(spinTime);
+            WaitForSeconds wait = new WaitForSeconds(UnityEngine.Random.Range(minSpinTime, maxSpinTime));
             while (true)
             {
                 yield return wait;
