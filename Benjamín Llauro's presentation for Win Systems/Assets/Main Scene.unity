@@ -1508,6 +1508,10 @@ MonoBehaviour:
   - {fileID: 912107341}
   - {fileID: 431495109}
   prePrizeText: 'PRIZE:'
+  spinTime: 10
+  startDelay: 0.2
+  minStopDelayRange: 2
+  maxStopDelayRange: 6
 --- !u!4 &976531577
 Transform:
   m_ObjectHideFlags: 0

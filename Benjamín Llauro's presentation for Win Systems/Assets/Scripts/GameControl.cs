@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -14,6 +13,10 @@ namespace SlotMachine
 
         [SerializeField] private Row[] rows;
         [SerializeField] private string prePrizeText;
+        [SerializeField] private float spinTime;
+        [SerializeField] private float startDelay;
+        [SerializeField] private float minStopDelayRange;
+        [SerializeField] private float maxStopDelayRange;
 
         private int _prizeValue;
 
@@ -53,8 +56,51 @@ namespace SlotMachine
         {
             if(CheckRowsStopped())
             {
-                startButtonPressed();
+                //startButtonPressed();
+                //foreach (Row current in rows)
+                    //current.StartRotating();
+                StopAllCoroutines();
+                StartCoroutine(StartRotationsWithDelay());
                 _resultsChecked = false;
+            }
+        }
+        private IEnumerator StartRotationsWithDelay()
+        {
+            WaitForSeconds wait = new WaitForSeconds(startDelay);
+            while(true)
+            {
+                foreach (Row current in rows)
+                {
+                    yield return wait;
+                    current.StartRotating();
+                }
+                StartCoroutine(CheckTimer());
+                yield break;
+            }
+        }
+        private IEnumerator StopRotationWithDelay()
+        {
+            WaitForSeconds wait = new WaitForSeconds(UnityEngine.Random.Range(minStopDelayRange, maxStopDelayRange));
+            while (true)
+            {
+                foreach (Row current in rows)
+                {
+                    yield return wait;
+                    current.PrepareToStop();
+                }
+                yield break;
+            }
+        }
+        private IEnumerator CheckTimer()
+        {
+            WaitForSeconds wait = new WaitForSeconds(spinTime);
+            while (true)
+            {
+                yield return wait;
+                /*foreach (Row current in rows)
+                    current.PrepareToStop();*/
+                StartCoroutine(StopRotationWithDelay());
+                yield break;
             }
         }
         private void CheckResults()
