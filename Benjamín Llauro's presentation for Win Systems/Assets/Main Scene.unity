@@ -2115,6 +2115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f2f62660a2a7e644bd511277a55b537, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prizesManager: {fileID: 11400000, guid: 02a2d44c692ccbd42bfadb067425f83f, type: 2}
 --- !u!224 &990901614 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5191341049275632401, guid: aeaaf5e445fd5d14cb42a78ecf5d3477, type: 3}
@@ -2946,7 +2947,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'PRIZE:'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

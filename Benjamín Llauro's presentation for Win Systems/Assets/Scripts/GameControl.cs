@@ -7,7 +7,7 @@ namespace SlotMachine
 {
     public class GameControl : MonoBehaviour
     {
-        public static event Action startButtonPressed = delegate { };
+        //public static event Action startButtonPressed = delegate { };
 
         [SerializeField] private TextMeshProUGUI prizeText;
         [SerializeField] private ResultManager resultManager;
@@ -35,7 +35,7 @@ namespace SlotMachine
                 if(current.rowStopped)
                 {
                     _prizeValue = 0;
-                    prizeText.enabled = false;
+                    //prizeText.enabled = false;
                     break;
                 }
             }
@@ -43,9 +43,9 @@ namespace SlotMachine
             
             if (CheckRowsStopped() == true && !_resultsChecked && !_machineRunning)
             {
-                resultManager.CheckResult(rows);
                 _resultsChecked = true;
                 prizeText.enabled = true;
+                _prizeValue = resultManager.CheckResult(rows);
                 prizeText.text = prePrizeText + " " + _prizeValue;
             }
         }
@@ -62,9 +62,6 @@ namespace SlotMachine
         {
             if(CheckRowsStopped())
             {
-                //startButtonPressed();
-                //foreach (Row current in rows)
-                //current.StartRotating();
                 _machineRunning = true;
                 StopAllCoroutines();
                 StartCoroutine(StartRotationsWithDelay());

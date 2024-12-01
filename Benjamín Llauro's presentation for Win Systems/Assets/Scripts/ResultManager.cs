@@ -1,12 +1,15 @@
+using Prizes;
 using UnityEngine;
 
 namespace SlotMachine
 {
     public class ResultManager : MonoBehaviour
     {
+        [SerializeField] PrizesManager prizesManager;
+
         private int _sameIconCount;
         private int _firstIconCategory;
-        public void CheckResult(Row[] rows)
+        public int CheckResult(Row[] rows)
         {
 
             SlotIcon[] icons = new SlotIcon[rows.Length];
@@ -29,7 +32,19 @@ namespace SlotMachine
                 else
                     stopCombo = true;
             }
-            Debug.Log("COMBO: " + _sameIconCount);
+            return CheckPrize(icons[0].iconType, _sameIconCount);
+        }
+
+        private int CheckPrize(SlotIcon.Category category, int _sameIconCount)
+        {
+            Prize[] allPrizes = prizesManager.GetAllPrizes();
+
+            foreach(Prize currentPrize in allPrizes)
+            {
+                if (currentPrize.category == category && currentPrize.amountNeeded == _sameIconCount)
+                    return currentPrize.prize;
+            }
+            return 0;
         }
     }
 }

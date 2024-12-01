@@ -5,5 +5,7 @@ namespace Prizes
     public class PrizesManager : ScriptableObject
     {
         [SerializeField] private Prize[] prizes;
+
+        public Prize[] GetAllPrizes() { return prizes; }
     }
 }
