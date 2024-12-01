@@ -11,7 +11,10 @@ namespace SlotMachine
 
         public bool rowStopped;
         public string stoppedSlot;
-        private SlotIcon _finalTarget;
+        private SlotIcon _finalTargetMiddle;
+
+        private SlotIcon _finalTargetUp;
+        private SlotIcon _finalTargetDown;
 
         [SerializeField] private SlotIcon[] realIcons;
         [SerializeField] private SlotIcon ghostIconToLoop;
@@ -29,10 +32,10 @@ namespace SlotMachine
             startPosition = transform.position;
             //GameControl.startButtonPressed += StartRotating;
         }
-        
+
         private void FixedUpdate()
         {
-            if(!rowStopped)
+            if (!rowStopped)
             {
                 if (ghostIconToLoop.transform.position.y <= comparisonToReset.position.y)
                 {
@@ -42,9 +45,9 @@ namespace SlotMachine
                 {
                     transform.position = new Vector3(transform.position.x,
                         transform.position.y + scrollSpeed * Time.deltaTime, transform.position.z);
-                    if(_goingToStop)
+                    if (_goingToStop)
                     {
-                        if (_finalTarget.transform.position.y <= middlePoint.position.y)
+                        if (_finalTargetMiddle.transform.position.y <= middlePoint.position.y)
                         {
                             rowStopped = true;
                             _goingToStop = false;
@@ -60,24 +63,26 @@ namespace SlotMachine
         {
             stoppedSlot = "";
             rowStopped = false;
-            //StopAllCoroutines();
-            //StartCoroutine(Rotate());
         }
         public void PrepareToStop()
         {
             _goingToStop = true;
-            _finalTarget = GetClosestHigherIconFromCenter();
+            _finalTargetMiddle = GetClosestHigherIconFromCenter();
+            _finalTargetUp = GetUpSlot(_finalTargetMiddle);
+            _finalTargetDown = GetDownSlot(_finalTargetMiddle);
+
         }
-        public SlotIcon GetIconResult()
-        {
-            return _finalTarget; 
-        }
+        public SlotIcon GetUpIconResult() {  return _finalTargetUp; }
+        public SlotIcon GetMiddleIconResult() { return _finalTargetMiddle; }
+        public SlotIcon GetDownIconResult() { return _finalTargetDown; }
+
         #endregion
 
+        #region Private Methods
         private SlotIcon GetClosestHigherIconFromCenter()
         {
             SlotIcon closestIcon = realIcons[0];
-            float closestDistance = Vector3.Distance(closestIcon.transform.position, middlePoint.position); //  closestIcon.transform.position.y - middlePoint.position.y;
+            float closestDistance = Vector3.Distance(closestIcon.transform.position, middlePoint.position);
             float currentDistance;
             for(int i = 0; i < realIcons.Length; i++)
             {
@@ -92,6 +97,33 @@ namespace SlotMachine
             }
             return closestIcon;
         }
+        private SlotIcon GetUpSlot(SlotIcon middleSlot)
+        {
+            if(middleSlot == realIcons[0])
+                return realIcons[realIcons.Length - 1];
+            for (int i = 0; i < realIcons.Length; i++)
+            {
+                if (realIcons[i] == middleSlot)
+                {
+                    return realIcons[i - 1];
+                }
 
+            }
+            return null;
         }
+        private SlotIcon GetDownSlot(SlotIcon middleSlot)
+        {
+            if (middleSlot == realIcons[realIcons.Length - 1])
+                return realIcons[0];
+            for (int i = 0; i < realIcons.Length; i++)
+            {
+                if (realIcons[i] == middleSlot)
+                {
+                    return realIcons[i + 1];
+                }
+            }
+            return null;
+        }
+        #endregion
     }
+}
