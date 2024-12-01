@@ -463,7 +463,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3216450948734263231, guid: 188861343997bef4f9115d998e937996, type: 3}
       propertyPath: m_Name
-      value: SlotGradient (16)
+      value: SlotGradient Ghost
       objectReference: {fileID: 0}
     - target: {fileID: 4921524388970882986, guid: 188861343997bef4f9115d998e937996, type: 3}
       propertyPath: ghost
@@ -593,7 +593,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3216450948734263231, guid: 188861343997bef4f9115d998e937996, type: 3}
       propertyPath: m_Name
-      value: SlotGradient (14)
+      value: SlotGradient Ghost
       objectReference: {fileID: 0}
     - target: {fileID: 4921524388970882986, guid: 188861343997bef4f9115d998e937996, type: 3}
       propertyPath: ghost
@@ -852,7 +852,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3216450948734263231, guid: 188861343997bef4f9115d998e937996, type: 3}
       propertyPath: m_Name
-      value: SlotGradient (15)
+      value: SlotGradient Ghost
       objectReference: {fileID: 0}
     - target: {fileID: 4921524388970882986, guid: 188861343997bef4f9115d998e937996, type: 3}
       propertyPath: ghost
@@ -1224,7 +1224,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3216450948734263231, guid: 188861343997bef4f9115d998e937996, type: 3}
       propertyPath: m_Name
-      value: SlotGradient (17)
+      value: SlotGradient Ghost
       objectReference: {fileID: 0}
     - target: {fileID: 4921524388970882986, guid: 188861343997bef4f9115d998e937996, type: 3}
       propertyPath: ghost
