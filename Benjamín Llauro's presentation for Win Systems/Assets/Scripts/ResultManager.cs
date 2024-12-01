@@ -84,7 +84,24 @@ namespace SlotMachine
 
             #endregion
 
-            return (CheckPrize(middleIcons[0].iconType, _sameIconCountMiddle) + CheckPrize(upIcons[0].iconType, _sameIconCountUp) + CheckPrize(downIcons[0].iconType, _sameIconCountDown));
+            //Check prize
+            int prizeMiddle = CheckPrize(middleIcons[0].iconType, _sameIconCountMiddle);
+            
+            int prizeUp = CheckPrize(upIcons[0].iconType, _sameIconCountUp);
+
+            int prizeDown = CheckPrize(downIcons[0].iconType, _sameIconCountDown);
+
+            //Highlight icons
+
+            if (prizeMiddle != 0)
+                HighlightRowAmount(middleIcons, _sameIconCountMiddle);
+            if (prizeUp != 0)
+                HighlightRowAmount(upIcons, _sameIconCountUp);
+            if (prizeDown != 0)
+                HighlightRowAmount(downIcons, _sameIconCountDown);
+
+
+            return (prizeMiddle + prizeUp + prizeDown);
         }
 
         private int CheckPrize(SlotIcon.Category category, int _sameIconCount)
@@ -97,6 +114,13 @@ namespace SlotMachine
                     return currentPrize.prize;
             }
             return 0;
+        }
+        private void HighlightRowAmount(SlotIcon[] row, int amount)
+        {
+            for(int i = 0; i < amount; i++)
+            {
+                row[i].Highlight(true);
+            }
         }
     }
 }

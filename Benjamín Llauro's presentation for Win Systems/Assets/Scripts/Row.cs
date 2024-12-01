@@ -61,6 +61,7 @@ namespace SlotMachine
         #region Public Methods
         public void StartRotating()
         {
+            TurnOffHighlights();
             stoppedSlot = "";
             rowStopped = false;
         }
@@ -71,6 +72,11 @@ namespace SlotMachine
             _finalTargetUp = GetUpSlot(_finalTargetMiddle);
             _finalTargetDown = GetDownSlot(_finalTargetMiddle);
 
+        }
+        public void TurnOffHighlights()
+        {
+            foreach (SlotIcon current in realIcons)
+                current.Highlight(false);
         }
         public SlotIcon GetUpIconResult() {  return _finalTargetUp; }
         public SlotIcon GetMiddleIconResult() { return _finalTargetMiddle; }
