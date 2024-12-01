@@ -30,7 +30,6 @@ namespace SlotMachine
         {
             rowStopped = true;
             startPosition = transform.position;
-            //GameControl.startButtonPressed += StartRotating;
         }
 
         private void FixedUpdate()
@@ -49,7 +48,13 @@ namespace SlotMachine
                     {
                         if (_finalTargetMiddle.transform.position.y <= middlePoint.position.y)
                         {
+                            float distanceY = _finalTargetMiddle.transform.position.y - middlePoint.position.y;
+
+
                             rowStopped = true;
+
+                            transform.position = new Vector3(transform.position.x, transform.position.y - distanceY, transform.position.z);
+
                             _goingToStop = false;
                         }
                     }
