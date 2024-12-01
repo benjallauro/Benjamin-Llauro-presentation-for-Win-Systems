@@ -10,6 +10,8 @@ namespace SlotMachine
         public static event Action startButtonPressed = delegate { };
 
         [SerializeField] private TextMeshProUGUI prizeText;
+        [SerializeField] private ResultManager resultManager;
+
 
         [SerializeField] private Row[] rows;
         [SerializeField] private string prePrizeText;
@@ -23,8 +25,10 @@ namespace SlotMachine
 
         private bool _resultsChecked = true;
 
+        private bool _machineRunning = false;
 
-        void Update()
+
+        private void Update()
         {
             foreach(Row current in rows)
             {
@@ -37,9 +41,10 @@ namespace SlotMachine
             }
 
             
-            if (CheckRowsStopped() == true && !_resultsChecked)
+            if (CheckRowsStopped() == true && !_resultsChecked && !_machineRunning)
             {
-                CheckResults();
+                resultManager.CheckResult(rows);
+                _resultsChecked = true;
                 prizeText.enabled = true;
                 prizeText.text = prePrizeText + " " + _prizeValue;
             }
@@ -59,7 +64,8 @@ namespace SlotMachine
             {
                 //startButtonPressed();
                 //foreach (Row current in rows)
-                    //current.StartRotating();
+                //current.StartRotating();
+                _machineRunning = true;
                 StopAllCoroutines();
                 StartCoroutine(StartRotationsWithDelay());
                 _resultsChecked = false;
@@ -89,6 +95,7 @@ namespace SlotMachine
                     yield return wait;
                     current.PrepareToStop();
                 }
+                _machineRunning = false;
                 yield break;
             }
         }
@@ -98,16 +105,9 @@ namespace SlotMachine
             while (true)
             {
                 yield return wait;
-                /*foreach (Row current in rows)
-                    current.PrepareToStop();*/
                 StartCoroutine(StopRotationWithDelay());
                 yield break;
             }
-        }
-        private void CheckResults()
-        {
-            _resultsChecked = true;
-            Debug.Log("CHECKED RESULTS");
         }
     }
 }

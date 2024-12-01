@@ -22,20 +22,14 @@ namespace SlotMachine
         [SerializeField] private Transform middlePoint;
         Vector3 startPosition;
 
+        #region Unity Methods
         private void Start()
         {
             rowStopped = true;
             startPosition = transform.position;
             //GameControl.startButtonPressed += StartRotating;
         }
-        public void StartRotating()
-        {
-            stoppedSlot = "";
-            rowStopped = false;
-            //StopAllCoroutines();
-           //StartCoroutine(Rotate());
-        }
-
+        
         private void FixedUpdate()
         {
             if(!rowStopped)
@@ -59,13 +53,26 @@ namespace SlotMachine
                 }
             }
         }
+        #endregion
 
+        #region Public Methods
+        public void StartRotating()
+        {
+            stoppedSlot = "";
+            rowStopped = false;
+            //StopAllCoroutines();
+            //StartCoroutine(Rotate());
+        }
         public void PrepareToStop()
         {
             _goingToStop = true;
             _finalTarget = GetClosestHigherIconFromCenter();
         }
-
+        public SlotIcon GetIconResult()
+        {
+            return _finalTarget; 
+        }
+        #endregion
 
         private SlotIcon GetClosestHigherIconFromCenter()
         {
