@@ -5,36 +5,39 @@ namespace SlotMachine
 {
     public class Row : MonoBehaviour
     {
-        private float _timeInterval;
-        private bool _goingToStop = false;
-
-
-        public bool rowStopped;
-        public string stoppedSlot;
-        private SlotIcon _finalTargetMiddle;
-
         private SlotIcon _finalTargetUp;
+        private SlotIcon _finalTargetMiddle;
         private SlotIcon _finalTargetDown;
 
-        [SerializeField] private SlotIcon[] realIcons;
-        [SerializeField] private SlotIcon ghostIconToLoop;
+        private float _timeInterval;
+        private bool _goingToStop = false;
+        private bool _rowStopped;
+        private string stoppedSlot;
+
+        private Vector3 startPosition;
+
         [SerializeField] private float timeToStop;
 
         [SerializeField] private float scrollSpeed;
+
+        [Header("--- Slot references ---")]
+        [SerializeField] private SlotIcon[] realIcons;
+        [SerializeField] private SlotIcon ghostIconToLoop;
+
+        [Header("--- Position references ---")]
         [SerializeField] private Transform comparisonToReset;
         [SerializeField] private Transform middlePoint;
-        Vector3 startPosition;
 
         #region Unity Methods
         private void Start()
         {
-            rowStopped = true;
+            _rowStopped = true;
             startPosition = transform.position;
         }
 
         private void FixedUpdate()
         {
-            if (!rowStopped)
+            if (!_rowStopped)
             {
                 if (ghostIconToLoop.transform.position.y <= comparisonToReset.position.y)
                 {
@@ -51,7 +54,7 @@ namespace SlotMachine
                             float distanceY = _finalTargetMiddle.transform.position.y - middlePoint.position.y;
 
 
-                            rowStopped = true;
+                            _rowStopped = true;
 
                             transform.position = new Vector3(transform.position.x, transform.position.y - distanceY, transform.position.z);
 
@@ -68,7 +71,7 @@ namespace SlotMachine
         {
             TurnOffHighlights();
             stoppedSlot = "";
-            rowStopped = false;
+            _rowStopped = false;
         }
         public void PrepareToStop()
         {
@@ -135,6 +138,7 @@ namespace SlotMachine
             }
             return null;
         }
+        public bool GetStopped() { return _rowStopped; }
         #endregion
     }
 }

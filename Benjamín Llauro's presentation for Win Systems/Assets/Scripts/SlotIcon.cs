@@ -13,7 +13,7 @@ public class SlotIcon : MonoBehaviour
     public void Highlight(bool showSprite)
     {
         highlightSprite.enabled = showSprite;
-        if(ghostMimic != null )
+        if(ghostMimic != null && !ghost)
             ghostMimic.Highlight(showSprite);
     }
 }

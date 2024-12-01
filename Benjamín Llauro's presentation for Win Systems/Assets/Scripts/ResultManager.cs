@@ -104,6 +104,7 @@ namespace SlotMachine
             return (prizeMiddle + prizeUp + prizeDown);
         }
 
+        #region Private Methods
         private int CheckPrize(SlotIcon.Category category, int _sameIconCount)
         {
             Prize[] allPrizes = prizesManager.GetAllPrizes();
@@ -122,5 +123,6 @@ namespace SlotMachine
                 row[i].Highlight(true);
             }
         }
+        #endregion
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -7,16 +6,22 @@ namespace SlotMachine
 {
     public class GameControl : MonoBehaviour
     {
-        //public static event Action startButtonPressed = delegate { };
-
+        [Header("--- Prize text ---")]
+        [SerializeField] private string prePrizeText;
         [SerializeField] private TextMeshProUGUI prizeText;
+
+        [Header("--- Result ---")]
         [SerializeField] private ResultManager resultManager;
 
-
+        [Header("--- Rows ---")]
         [SerializeField] private Row[] rows;
-        [SerializeField] private string prePrizeText;
+        
+
+        [Header("--- Spin time ---")]
         [SerializeField] private float minSpinTime;
         [SerializeField] private float maxSpinTime;
+
+        [Header("--- Start and stop delay ---")]
         [SerializeField] private float startDelay;
         [SerializeField] private float minStopDelayRange;
         [SerializeField] private float maxStopDelayRange;
@@ -27,15 +32,14 @@ namespace SlotMachine
 
         private bool _machineRunning = false;
 
-
+        #region Unity Methods
         private void Update()
         {
             foreach(Row current in rows)
             {
-                if(current.rowStopped)
+                if(current.GetStopped())
                 {
                     _prizeValue = 0;
-                    //prizeText.enabled = false;
                     break;
                 }
             }
@@ -49,29 +53,22 @@ namespace SlotMachine
                 prizeText.text = prePrizeText + " " + _prizeValue;
             }
         }
+        #endregion
+
+        #region Private Methods
         private bool CheckRowsStopped()
         {
             foreach (Row current in rows)
             {
-                if (!current.rowStopped)
+                if (!current.GetStopped())
                     return false;
             }
             return true;
         }
-        public void PressStartButton()
-        {
-            if(CheckRowsStopped())
-            {
-                _machineRunning = true;
-                StopAllCoroutines();
-                StartCoroutine(StartRotationsWithDelay());
-                _resultsChecked = false;
-            }
-        }
         private IEnumerator StartRotationsWithDelay()
         {
             WaitForSeconds wait = new WaitForSeconds(startDelay);
-            while(true)
+            while (true)
             {
                 foreach (Row current in rows)
                 {
@@ -106,5 +103,19 @@ namespace SlotMachine
                 yield break;
             }
         }
+        #endregion
+
+        #region Public Methods
+        public void PressStartButton()
+        {
+            if(CheckRowsStopped())
+            {
+                _machineRunning = true;
+                StopAllCoroutines();
+                StartCoroutine(StartRotationsWithDelay());
+                _resultsChecked = false;
+            }
+        }
+        #endregion
     }
 }
