@@ -286,7 +286,7 @@ GameObject:
   - component: {fileID: 748897870}
   - component: {fileID: 748897869}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Spin Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -460,6 +460,7 @@ MonoBehaviour:
   startDelay: 0.2
   minStopDelayRange: 2
   maxStopDelayRange: 2
+  spinButton: {fileID: 748897869}
 --- !u!4 &976531577
 Transform:
   m_ObjectHideFlags: 0

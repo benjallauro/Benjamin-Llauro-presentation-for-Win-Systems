@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace SlotMachine
 {
@@ -26,6 +27,9 @@ namespace SlotMachine
         [SerializeField] private float minStopDelayRange;
         [SerializeField] private float maxStopDelayRange;
 
+        [Header("Spin button")]
+        [SerializeField] private Button spinButton;
+
         private int _prizeValue;
 
         private bool _resultsChecked = true;
@@ -43,7 +47,6 @@ namespace SlotMachine
                     break;
                 }
             }
-
             
             if (CheckRowsStopped() == true && !_resultsChecked && !_machineRunning)
             {
@@ -51,6 +54,7 @@ namespace SlotMachine
                 prizeText.enabled = true;
                 _prizeValue = resultManager.CheckResult(rows);
                 prizeText.text = prePrizeText + " " + _prizeValue;
+                spinButton.interactable = true;
             }
         }
         #endregion
@@ -114,6 +118,7 @@ namespace SlotMachine
                 StopAllCoroutines();
                 StartCoroutine(StartRotationsWithDelay());
                 _resultsChecked = false;
+                spinButton.interactable = false;
             }
         }
         #endregion
